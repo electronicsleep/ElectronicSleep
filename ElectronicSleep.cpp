@@ -6,6 +6,7 @@ Released under the BSD license
 */
 
 #include <SDL2/SDL.h>
+#include <iostream>
 #include <stdio.h>
 #include <string>
 
@@ -14,14 +15,40 @@ const int SCREEN_HEIGHT = 480;
 
 using namespace std;
 
+
+void printMsg(string msg){
+    cout << msg << endl;
+}
+
+
+SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *ren){
+    SDL_Texture *texture = NULL;
+    SDL_Surface *loadedImage = SDL_LoadBMP(file.c_str());
+    if (loadedImage != NULL){
+        texture = SDL_CreateTextureFromSurface(ren, loadedImage);
+        SDL_FreeSurface(loadedImage);
+        if (texture == NULL){
+            printMsg("Error:CreateTextureFromSurface");
+            exit(1);
+        }
+    } else {
+        printMsg("Error:LoadBMP: " + file);
+        exit(1);
+    }
+    return texture;
+}
+
+
 int main(int argc, char* argv[]) {
+
+    string errorMsg = "";
 
     SDL_Window *window;
 
     SDL_Init(SDL_INIT_VIDEO);
 
     window = SDL_CreateWindow(
-        "SDL2",
+        "Electronic Sleep C++ and SDL2",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
         SCREEN_WIDTH,
@@ -30,75 +57,25 @@ int main(int argc, char* argv[]) {
     );
 
     if (window == NULL) {
-        printf("Could not create window: %s\n", SDL_GetError());
+        errorMsg = SDL_GetError();
+        printMsg("Could not create window: " + errorMsg);
         return 1;
     }
 
     SDL_Renderer *ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (ren == NULL) {
         SDL_DestroyWindow(window);
-        printf("SDL_CreateRenderer Error: %s ", SDL_GetError());
+        errorMsg = SDL_GetError();
+        printMsg("SDL_CreateRenderer Error" + errorMsg);
         SDL_Quit();
         return 1;
     }
 
-    SDL_Surface *bmp = SDL_LoadBMP("Images/es1.bmp");
-    if (bmp == NULL){
-        SDL_DestroyRenderer(ren);
-        SDL_DestroyWindow(window);
-        printf("SDL LoadBMP Error %s\n", SDL_GetError());
-        SDL_Quit();
-        return 1;
-    }
+    SDL_Texture *tex = loadTexture("Images/es1.bmp", ren);
 
-    SDL_Texture *tex = SDL_CreateTextureFromSurface(ren, bmp);
-    SDL_FreeSurface(bmp);
-    if (tex == NULL){
-        SDL_DestroyRenderer(ren);
-        SDL_DestroyWindow(window);
-        printf("SDL CreateTextureFromSurface Error %s\n", SDL_GetError());
-        SDL_Quit();
-        return 1;
-    }
+    SDL_Texture *tex2 = loadTexture("Images/es2.bmp", ren);
 
-
-    SDL_Surface *bmp2 = SDL_LoadBMP("Images/es2.bmp");
-    if (bmp2 == NULL)    {
-        SDL_DestroyRenderer(ren);
-        SDL_DestroyWindow(window);
-        printf("SDL LoadBMP Error %s\n", SDL_GetError());
-        SDL_Quit();
-        return 1;
-    }
-
-    SDL_Texture *tex2 = SDL_CreateTextureFromSurface(ren, bmp2);
-    SDL_FreeSurface(bmp2);
-    if (tex == NULL){
-        SDL_DestroyRenderer(ren);
-        SDL_DestroyWindow(window);
-        printf("SDL CreateTextureFromSurface Error %s\n", SDL_GetError());
-        SDL_Quit();
-        return 1;
-    }
-
-    SDL_Surface *bmp3 = SDL_LoadBMP("Images/es3.bmp");
-    if (bmp2 == NULL)    {
-        SDL_DestroyRenderer(ren);
-        SDL_DestroyWindow(window);
-        printf("SDL LoadBMP Error %s\n", SDL_GetError());
-        SDL_Quit();
-        return 1;
-    }
-
-    SDL_Texture *tex3 = SDL_CreateTextureFromSurface(ren, bmp3);
-    SDL_FreeSurface(bmp3);
-    if (tex == NULL){
-        SDL_DestroyRenderer(ren);
-        SDL_DestroyWindow(window);
-        printf("SDL CreateTextureFromSurface Error %s\n", SDL_GetError());
-        SDL_Quit();
-        return 1;
-    }
+    SDL_Texture *tex3 = loadTexture("Images/es3.bmp", ren);
 
     for (int i = 0; i < 50; ++i){
         SDL_RenderClear(ren);
@@ -108,9 +85,9 @@ int main(int argc, char* argv[]) {
             SDL_RenderCopy(ren, tex2, NULL, NULL);
         else
             SDL_RenderCopy(ren, tex3, NULL, NULL);
-        //printf("Result: %d\n", i % 3 == 0);
+        printMsg("Result: " + to_string(i % 3));
         SDL_RenderPresent(ren);
-        //printf("Loop Delay: %d\n", i);
+        printMsg("Loop: " + to_string(i));
         SDL_Delay(100);
     }
 
