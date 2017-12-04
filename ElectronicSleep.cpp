@@ -8,7 +8,6 @@ Released under the BSD license
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <iostream>
-#include <stdio.h>
 #include <string>
 
 using namespace std;
@@ -46,8 +45,10 @@ SDL_Texture* loadTexture(const std::string &file, SDL_Renderer *ren){
 int main(int argc, char ** argv) {
 
 
-    int x = 1;
-    int y = 1;
+    int x = 0;
+    int y = 0;
+    int offset = 0;
+
     int loop = 0;
     bool quit = false;
 
@@ -152,12 +153,12 @@ int main(int argc, char ** argv) {
             SDL_RenderCopy(ren, tex3, NULL, NULL);
 
 
-        int offset = 0;
         if (loop > 50)
             offset = 10;
         else
-            offset = 50;
+            offset = 40;
 
+        // IMAGES
         for (int i = 0; i < 1000; i = i + 10) {
             if (loop % 3 == 0) {
                 SDL_Rect dstrect = { i+offset, i, 64, 64 };
