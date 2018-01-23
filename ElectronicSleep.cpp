@@ -173,7 +173,7 @@ int main(int argc, char ** argv) {
         }
 
 
-        printMsg("Result: " + to_string(loop % 3));
+        //printMsg("Result: " + to_string(loop % 3));
 
         if (loop > 100)
             loop = 0;
@@ -182,7 +182,7 @@ int main(int argc, char ** argv) {
         SDL_RenderCopy(ren, tex4, NULL, &dstrect2);
         SDL_RenderPresent(ren);
 
-        printMsg("Loop: " + to_string(loop));
+        //printMsg("Loop: " + to_string(loop));
     }
 
     SDL_DestroyTexture(tex);
