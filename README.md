@@ -5,7 +5,7 @@
 ```
 # Install packages debian
 
-bash install.sh
+bash setup.sh
 
 make all
 
