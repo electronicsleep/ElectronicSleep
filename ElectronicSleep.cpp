@@ -1,7 +1,7 @@
 /*
 Author: Chris Robertson https://github.com/electronicsleep
-Date: 11/27/2017
-Purpose: C++ and SDL2
+Date: 2017/11/27
+Purpose: Learn and experiement with C++ and SDL2
 Released under the BSD license
 */
 
@@ -61,14 +61,7 @@ int main(int argc, char ** argv) {
 
 
     if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-	printMsg("Failed to init SDl2");
-        exit(1);
-    }
-
-    if (flags != (result = Mix_Init(flags))) {
-	printMsg("SDL2 Mixwer issue");
-        errorMsg = Mix_GetError();
-	printMsg("SDL2 Mix_Init " + errorMsg);
+	printMsg("Failed to init SDL2 Audio");
         exit(1);
     }
 
