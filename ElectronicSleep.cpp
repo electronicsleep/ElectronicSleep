@@ -52,9 +52,6 @@ int main(int argc, char ** argv) {
     int loop = 0;
     bool quit = false;
 
-    int result = 0;
-    int flags = MIX_INIT_MP3;
-
     string errorMsg = "";
 
     SDL_Event event;
