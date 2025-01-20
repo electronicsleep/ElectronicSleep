@@ -1,7 +1,16 @@
+# Detect OS
+UNAME := $(shell uname)
 
-all: test
+# Build based on OS name
+DetectOS:
+	-@make $(UNAME)
 
-test: run1
+Linux:
+	g++ ElectronicSleep.cpp -o ElectronicSleep -std=c++17 -Wall -lSDL2main -lSDL2 -lSDL2_ttf
 
-run1:
-	g++ ElectronicSleep.cpp -o ElectronicSleep.out -std=c++0x -Wall -lSDL2main -lSDL2_mixer -lSDL2 -lGL -lglut -lGLEW
+Darwin:
+	# g++ ElectronicSleep.cpp -o ElectronicSleep -I/opt/homebrew/include -L/opt/homebrew/lib -std=c++17 -Wall -lSDL2main -lSDL2 -lSDL2_ttf
+	g++ ElectronicSleep.cpp -o ElectronicSleep -I/opt/homebrew/include -L/opt/homebrew/lib -std=c++17 -Wall -lSDL2main -lSDL2_mixer -lSDL2 -lSDL2_ttf
+
+run:
+	./Electronicsleep
