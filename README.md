@@ -5,9 +5,14 @@
 ### Install packages Debian/Ubuntu and run
 
 ```
+MacOS
+brew install sdl2
+
+Linux
 bash setup.sh
-make all
-./ElectronicSleep.out
+
+make
+make run
 ```
 
 ### Use Arrow keys to move sprite
